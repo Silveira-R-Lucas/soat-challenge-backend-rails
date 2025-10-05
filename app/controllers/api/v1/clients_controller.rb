@@ -1,15 +1,16 @@
 class Api::V1::ClientsController < ActionController::API
+  require 'httparty'
   include ActionController::MimeResponds
 
   def create
     create_client_service = CreateClient.new(
-      client_repository: ActiveRecordClientRepository.new
+      client_repository: ActiveRecordClientRepository.new,
+      identity_provider_adapter: AuthenticationServiceAdapter.new
     )
 
     begin
       created_client = create_client_service.call(client_params)
-
-      render json: { "successful": true, "status": 201, response: created_client}, status: :created
+      render json: { "successful": true, "status": 201, response: created_client }, status: :created
     rescue ArgumentError => e 
       render json: { "successful": false, "status": 422, error: e.message }, status: :unprocessable_entity
     rescue ActiveRecord::RecordInvalid => e 
@@ -20,21 +21,16 @@ class Api::V1::ClientsController < ActionController::API
   end
 
   def identify_session
-    identify_client_session_use_case = IdentifyClientSession.new(
-      client_repository: ActiveRecordClientRepository.new
+    identify_client_service = IdentifyClientSession.new(
+      identity_provider_adapter: AuthenticationServiceAdapter.new
     )
-
+    
     begin
-      client = identify_client_session_use_case.call(cpf: client_params[:cpf])
-
-      if client
-        session[:client_id] = client.id
-        render json: { "successful": true, "status": 200, message: 'Sessão identificada', client: client }, status: :ok
-      else
-        render json: { "successful": false, "status": 404, error: 'CPF não encontrado' }, status: :not_found
-      end
+      tokens = identify_client_service.call(cpf: client_params[:cpf])
+      session[:tokens] = tokens
+      render json: { "successful": true, "status": 200, message: 'Sessão identificada'}, status: :ok
     rescue ArgumentError => e 
-      render json: { errors: e.message }, status: :bad_request
+      render json: { "successful": false, "status": 404, error: e.message }, status: :not_found
     rescue StandardError => e 
       render json: { "successful": false, "status": 500, errors: "Um erro inesperado ocorreu: #{e.message}" }, status: :internal_server_error
     end

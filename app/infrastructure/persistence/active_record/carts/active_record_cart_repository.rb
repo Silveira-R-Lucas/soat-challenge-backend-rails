@@ -23,6 +23,8 @@ class ActiveRecordCartRepository
 
   def create_anonymous_cart 
     ar_cart = CartModel.create!
+    ar_cart.client_model_id = 99999
+    ar_cart.save!
     map_ar_cart_to_domain(ar_cart)
   end
 

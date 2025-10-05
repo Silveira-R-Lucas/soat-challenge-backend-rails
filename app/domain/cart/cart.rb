@@ -33,7 +33,7 @@ class Cart
     raise ArgumentError, "Carrinho vazio, não é possível atualizar status para 'recebido'." if empty?
     raise ArgumentError, "Pagamento pendente ou não autorizado, não é possível atualizar status para 'recebido'" unless payment_approved_or_authorized?
 
-    self.status = 'Recebido'
+    self.status = 'recebido'
   end
 
   def update_status_based_on_payment_notification(status)

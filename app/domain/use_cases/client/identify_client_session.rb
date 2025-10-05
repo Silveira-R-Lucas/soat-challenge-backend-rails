@@ -1,21 +1,15 @@
 class IdentifyClientSession
-  def initialize(client_repository:)
-    @client_repository = client_repository
+  def initialize(identity_provider_adapter:)
+    @identity_provider_adapter = identity_provider_adapter
   end
 
   def call(cpf:)
-    normalized_cpf = cpf.to_s.gsub(/[^0-9]/, '')
+    raise ArgumentError, "CPF não pode estar vazio." if cpf.blank?
+    
+    tokens = @identity_provider_adapter.identify_session_by_cpf(cpf)
 
-    if normalized_cpf.empty?
-      raise ArgumentError, "CPF não pode estar vazio ou inválido."
-    end
+    raise ArgumentError, "CPF não encontrado ou falha na autenticação." unless tokens
 
-    client = @client_repository.find_by_cpf(normalized_cpf)
-
-    if client
-      return client
-    end
-
-    nil
+    tokens
   end
 end
