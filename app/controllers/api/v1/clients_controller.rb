@@ -1,5 +1,4 @@
 class Api::V1::ClientsController < ActionController::API
-  require "httparty"
   include ActionController::MimeResponds
 
   def create
