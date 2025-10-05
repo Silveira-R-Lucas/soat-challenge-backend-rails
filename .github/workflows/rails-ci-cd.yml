@@ -77,10 +77,18 @@ jobs:
           docker tag $DOCKER_IMAGE_NAME:${{ github.sha }} $DOCKER_IMAGE_NAME:latest
           docker push $DOCKER_IMAGE_NAME:latest
 
+      - name: Get Secrets from AWS Secrets Manager
+        id: get-secrets
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            KUBE_CONFIG_CONTENT, soat/k8s/kubeconfig
+            RAILS_DATABASE_URL, soat/db/database_url
+
       - name: Set up Kubeconfig
         run: |
           mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+          echo "${{ steps.get-secrets.outputs.KUBE_CONFIG_CONTENT }}" > $HOME/.kube/config
 
       - name: Create/Update Kubernetes Secrets
         run: |
