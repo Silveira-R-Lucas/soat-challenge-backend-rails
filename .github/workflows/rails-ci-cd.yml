@@ -62,13 +62,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: sa-east-1
-
       - name: Login to Container Registry
         uses: docker/login-action@v3
         with:
@@ -83,40 +76,3 @@ jobs:
           docker push $DOCKER_IMAGE_NAME:${{ github.sha }}
           docker tag $DOCKER_IMAGE_NAME:${{ github.sha }} $DOCKER_IMAGE_NAME:latest
           docker push $DOCKER_IMAGE_NAME:latest
-
-      - name: Get Secrets from AWS Secrets Manager
-        id: get-secrets
-        uses: aws-actions/aws-secretsmanager-get-secrets@v2
-        with:
-          aws-region: sa-east-1
-          secret-ids: |
-            KUBE_CONFIG_CONTENT, soat/k8s/kubeconfig
-            RAILS_DATABASE_URL, soat/db/database_url
-
-      - name: Set up Kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ steps.get-secrets.outputs.KUBE_CONFIG_CONTENT }}" > $HOME/.kube/config
-
-      - name: Create/Update Kubernetes Secrets
-        run: |
-          kubectl create secret generic rails-app-secrets \
-            --from-literal=IDENTIFY_CLIENT_FUNCTION_URL='${{ vars.IDENTIFY_CLIENT_FUNCTION_URL }}' \
-            --from-literal=CREATE_USER_FUNCTION_URL='${{ vars.CREATE_USER_FUNCTION_URL }}' \
-            --from-literal=MERCADOPAGO_SECRET='${{ secrets.MERCADOPAGO_SECRET }}' \
-            --from-literal=MERCADOPAGO_NOTIFICATION_URL='${{ vars.MERCADOPAGO_NOTIFICATION_URL }}' \
-            --from-literal=MERCADOPAGO_EXTERNAL_POS_ID='${{ secrets.MERCADOPAGO_EXTERNAL_POS_ID }}' \
-            --from-literal=MERCADOPAGO_USER_ID='${{ secrets.MERCADOPAGO_USER_ID }}' \
-            --from-literal=MERCADOPAGO_TOKEN='${{ secrets.MERCADOPAGO_TOKEN }}' \
-            --dry-run=client -o yaml | kubectl apply -f -
-
-      - name: Deploy to Kubernetes
-        run: |
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          sudo mv kustomize /usr/local/bin/
-          
-          cd k8s 
-          
-          kustomize edit set image $DOCKER_IMAGE_NAME:${{ github.sha }}
-          
-          kustomize build . | kubectl apply -f -
