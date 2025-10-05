@@ -1,5 +1,5 @@
 class ProductModel < ApplicationRecord
-  self.table_name = 'product_models'
+  self.table_name = "product_models"
 
   has_many_attached :images
   validates_presence_of :name, :category, :price, :quantity

@@ -13,5 +13,4 @@ class Product
   def available?
     quantity > 0
   end
-
 end

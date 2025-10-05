@@ -13,7 +13,7 @@ class AddProductToCart
     unless cart
       cart = Cart.new(client_id: client_id, cart_total_price: 0)
     end
-    
+
     cart.add_item(product: product, quantity: quantity)
     @cart_repository.save(cart)
 

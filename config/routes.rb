@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "api/v1/product/:product_id" => "api/v1/products#show"
   get "api/v1/products_by_category/:category" => "api/v1/products#find_by_category"
   delete "api/v1/remove_product_from_catalog/:product_id" => "api/v1/products#remove_product_from_catalog"
-  match "api/v1/update_product/:product_id" => "api/v1/products#update", via: [:patch, :post]
+  match "api/v1/update_product/:product_id" => "api/v1/products#update", via: [ :patch, :post ]
 
   post "api/v1/cart/add_item" => "api/v1/carts#add_item"
   get "api/v1/cart/" => "api/v1/carts#show"

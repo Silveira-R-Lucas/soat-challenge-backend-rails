@@ -5,7 +5,7 @@ class UpdateProduct
 
   def call(id:, attributes:)
     product = @product_repository.find(id)
-    return nil unless product 
+    return nil unless product
 
     product.name = attributes[:name] if attributes.key?(:name)
     product.category = attributes[:category] if attributes.key?(:category)

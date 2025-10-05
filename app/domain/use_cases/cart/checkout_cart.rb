@@ -7,8 +7,8 @@ class CheckoutCart
     cart.mark_as_received!
     @cart_repository.save(cart)
 
-    cart 
-  rescue ArgumentError => e 
+    cart
+  rescue ArgumentError => e
     raise e
   end
 end

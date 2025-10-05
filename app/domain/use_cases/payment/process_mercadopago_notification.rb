@@ -1,7 +1,7 @@
 class ProcessMercadopagoNotification
   def initialize(mercadopago_webhook_adapter:, cart_repository:)
-    @mercadopago_webhook_adapter = mercadopago_webhook_adapter 
-    @cart_repository = cart_repository 
+    @mercadopago_webhook_adapter = mercadopago_webhook_adapter
+    @cart_repository = cart_repository
   end
 
   def call(params:, headers:)

@@ -10,8 +10,8 @@ class UpdateCartStatus
     cart.update_status!(new_status)
     @cart_repository.save(cart)
 
-    cart 
+    cart
   rescue ArgumentError => e
-    raise e 
+    raise e
   end
 end

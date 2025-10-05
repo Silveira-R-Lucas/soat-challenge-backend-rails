@@ -88,7 +88,7 @@ RSpec.describe 'api/v1/carts', type: :request do
         description: 'product parameters',
         schema: {
           type: :object,
-          properties: { 
+          properties: {
             name: { type: :string },
             quantity: { type: :integer }
           },
@@ -171,7 +171,7 @@ RSpec.describe 'api/v1/carts', type: :request do
 
       response '200', 'successful' do
         schema type: :array,
-               items: { 
+               items: {
                   type: :object,
                   properties: {
                     cart_id: { type: :integer },
@@ -203,7 +203,7 @@ RSpec.describe 'api/v1/carts', type: :request do
 
       response '200', 'successful' do
         schema type: :array,
-               items: { 
+               items: {
                   type: :object,
                   properties: {
                     cart_id: { type: :integer },
@@ -231,7 +231,7 @@ RSpec.describe 'api/v1/carts', type: :request do
 
       response '200', 'successful' do
         schema type: :array,
-               items: { 
+               items: {
                   type: :object,
                   properties: {
                     cart_id: { type: :integer },

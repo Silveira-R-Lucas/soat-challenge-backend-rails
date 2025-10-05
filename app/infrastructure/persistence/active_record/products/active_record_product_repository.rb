@@ -9,7 +9,7 @@ class ActiveRecordProductRepository
     ar_product.quantity = product.quantity
     ar_product.save!
 
-    product.id = ar_product.id 
+    product.id = ar_product.id
     product
   end
 
@@ -41,7 +41,7 @@ class ActiveRecordProductRepository
     end
   end
 
-  def delete(id) 
+  def delete(id)
     product_model = ProductModel.find(id)
     product_model.destroy!
     true

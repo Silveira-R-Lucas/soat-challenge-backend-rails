@@ -1,10 +1,10 @@
-require 'curb'
-require 'json'
+require "curb"
+require "json"
 
 class AuthenticationServiceAdapter
   def initialize
-    @create_user_url = ENV.fetch('CREATE_USER_FUNCTION_URL')
-    @identify_client_url = ENV.fetch('IDENTIFY_CLIENT_FUNCTION_URL')
+    @create_user_url = ENV.fetch("CREATE_USER_FUNCTION_URL")
+    @identify_client_url = ENV.fetch("IDENTIFY_CLIENT_FUNCTION_URL")
   end
 
   def create_user(client)
@@ -15,7 +15,7 @@ class AuthenticationServiceAdapter
     }.to_json
 
     http = Curl.post(@create_user_url, payload) do |http_client|
-      http_client.headers['Content-Type'] = 'application/json'
+      http_client.headers["Content-Type"] = "application/json"
     end
 
     successful = http.response_code.between?(200, 299)
@@ -28,7 +28,7 @@ class AuthenticationServiceAdapter
     payload = { cpf: cpf }.to_json
 
     http = Curl.post(@identify_client_url, payload) do |http_client|
-      http_client.headers['Content-Type'] = 'application/json'
+      http_client.headers["Content-Type"] = "application/json"
     end
 
     if http.response_code.between?(200, 299)

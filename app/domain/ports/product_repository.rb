@@ -14,7 +14,7 @@ module ProductRepository
   def find_all
     raise NotImplementedError
   end
-  
+
   def delete(id)
     raise NotImplementedError
   end

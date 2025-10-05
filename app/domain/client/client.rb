@@ -9,7 +9,7 @@ class Client
   end
 
   def valid?
-    !name.blank? && !email.blank? && email.include?('@')
+    !name.blank? && !email.blank? && email.include?("@")
   end
 
   def persisted?

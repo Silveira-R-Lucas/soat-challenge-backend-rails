@@ -42,7 +42,7 @@ class ActiveRecordClientRepository
         cpf: ar_client.cpf
       )
     else
-      nil 
+      nil
     end
   end
 end

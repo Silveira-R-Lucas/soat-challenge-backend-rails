@@ -1,7 +1,6 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/products', type: :request do
-
   path '/api/v1/create_product' do
     post 'create_product' do
       tags 'Products'
@@ -13,7 +12,7 @@ RSpec.describe 'api/v1/products', type: :request do
         description: 'Product registry parameters',
         schema: {
           type: :object,
-          properties: { 
+          properties: {
             name: { type: :string },
             category: { type: :string },
             description: { type: :string },
@@ -56,7 +55,7 @@ RSpec.describe 'api/v1/products', type: :request do
 
       response '200', 'successful' do
         schema type: :array,
-               items: { 
+               items: {
                   type: :object,
                   properties: {
                     product_id: { type: :string },
@@ -65,7 +64,7 @@ RSpec.describe 'api/v1/products', type: :request do
                     price: { type: :number },
                     quantity: { type: :integer },
                     images: { type: :file }
-                  },
+                  }
                 }
         run_test!
       end
@@ -92,7 +91,7 @@ RSpec.describe 'api/v1/products', type: :request do
               properties: {
                 msg: { type: :string }
               },
-              required: ['product_id']
+              required: [ 'product_id' ]
         run_test!
       end
 
@@ -118,7 +117,7 @@ RSpec.describe 'api/v1/products', type: :request do
         description: 'Product update parameters',
         schema: {
           type: :object,
-          properties: { 
+          properties: {
             name: { type: :string },
             category: { type: :string },
             description: { type: :string },
@@ -165,7 +164,7 @@ RSpec.describe 'api/v1/products', type: :request do
         description: 'Product update parameters',
         schema: {
           type: :object,
-          properties: { 
+          properties: {
             name: { type: :string },
             category: { type: :string },
             description: { type: :string },

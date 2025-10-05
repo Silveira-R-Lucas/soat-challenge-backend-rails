@@ -9,7 +9,7 @@ class ActiveRecordCartRepository
       ar_cart.save!
     else
       ar_cart = CartModel.includes(:cart_item_models).find_by(id: cart_id)
-    end 
+    end
 
     unless ar_cart
       ar_client = ClientModel.find(client_id)
@@ -21,7 +21,7 @@ class ActiveRecordCartRepository
     raise ArgumentError, "Cliente com ID #{client_id} não encontrado."
   end
 
-  def create_anonymous_cart 
+  def create_anonymous_cart
     ar_cart = CartModel.create!
     ar_cart.client_model_id = 99999
     ar_cart.save!
@@ -40,18 +40,18 @@ class ActiveRecordCartRepository
     ar_cart.client_model_id = cart.client_id
     ar_cart.total_price = cart.total_amount
     ar_cart.payment_status = cart.payment_status
-    ar_cart.status = cart.status 
-    ar_cart.save! 
+    ar_cart.status = cart.status
+    ar_cart.save!
 
     current_product_ids_in_domain = cart.items.map(&:product_id).compact
     ar_cart.cart_item_models.where.not(product_model_id: current_product_ids_in_domain).destroy_all
 
     cart.items.each do |item|
       ar_item = ar_cart.cart_item_models.find_by(product_model_id: item.product_id)
-      
+
       if ar_item
         ar_item.quantity = item.quantity
-      else 
+      else
         ar_item = ar_cart.cart_item_models.build(
           product_model_id: item.product_id,
           quantity: item.quantity,
@@ -64,7 +64,7 @@ class ActiveRecordCartRepository
     end
 
     cart.id = ar_cart.id
-    cart 
+    cart
   end
 
   def find_by_status(status)
@@ -92,13 +92,13 @@ class ActiveRecordCartRepository
       )
     end
     Cart.new(
-    id: ar_cart.id, 
-    client_id: ar_cart.client_model_id, 
-    items: items, 
+    id: ar_cart.id,
+    client_id: ar_cart.client_model_id,
+    items: items,
     total_price: ar_cart.total_price,
     payment_status: ar_cart.payment_status,
-    status: ar_cart.status, 
+    status: ar_cart.status,
     created_at: ar_cart.created_at,
-    updated_at: ar_cart.updated_at )
+    updated_at: ar_cart.updated_at)
   end
 end

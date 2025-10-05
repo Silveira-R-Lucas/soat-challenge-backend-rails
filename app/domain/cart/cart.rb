@@ -8,8 +8,8 @@ class Cart
   def initialize(attributes = {})
     @id = attributes[:id]
     @client_id = attributes[:client_id]
-    @payment_status = attributes[:payment_status] || 'pendente' 
-    @status = attributes[:status] || 'novo'
+    @payment_status = attributes[:payment_status] || "pendente"
+    @status = attributes[:status] || "novo"
     @items = attributes[:items] || []
     @total_price = self.total_amount
     @created_at = attributes[:created_at]
@@ -21,7 +21,7 @@ class Cart
       raise ArgumentError, "Status inválido: #{new_status}. Statuses válidos são: #{VALID_STATUS.join(', ')}."
     end
 
-    raise ArgumentError, "Não é possível mudar pedido 'finalizado'." if status == 'finalizado'
+    raise ArgumentError, "Não é possível mudar pedido 'finalizado'." if status == "finalizado"
     self.status = new_status
   end
 
@@ -33,7 +33,7 @@ class Cart
     raise ArgumentError, "Carrinho vazio, não é possível atualizar status para 'recebido'." if empty?
     raise ArgumentError, "Pagamento pendente ou não autorizado, não é possível atualizar status para 'recebido'" unless payment_approved_or_authorized?
 
-    self.status = 'recebido'
+    self.status = "recebido"
   end
 
   def update_status_based_on_payment_notification(status)
@@ -41,7 +41,7 @@ class Cart
   end
 
   def mark_as_paid
-    self.payment_status = 'aprovado'
+    self.payment_status = "aprovado"
   end
 
   def empty?
@@ -70,7 +70,7 @@ class Cart
 
   def remove_item(product_id:, quantity: nil)
     item_to_remove = @items.find { |item| item.product_id == product_id }
-    return false unless item_to_remove 
+    return false unless item_to_remove
 
     if quantity.nil? || quantity >= item_to_remove.quantity
       @items.delete(item_to_remove)
@@ -83,7 +83,7 @@ class Cart
   def update_item_quantity(product_id:, new_quantity:)
     item_to_update = @items.find { |item| item.product_id == product_id }
 
-    return false unless item_to_update 
+    return false unless item_to_update
 
     if new_quantity <= 0
       remove_item(product_id: product_id)
