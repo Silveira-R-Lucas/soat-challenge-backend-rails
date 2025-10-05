@@ -55,7 +55,7 @@ Desenvolver um monolito backend para gerenciamento de pedidos de uma lanchonete,
 | **Collection da api - Postman** | [ Payloads e Curl ](https://www.postman.com/spacecraft-engineer-11432051/teste-para-api-soat-challenge/overview) |
 | **Desenho de arquitetura - Os requisitos do negócio (Aqui demonstramos o quê e para quem é destinado o projeto)** | [ Excalidraw ](https://excalidraw.com/#json=vOsZffTagoyRcKH8EYHVv,o4F3IzLk1r7_5IKyKJOy5g) |
 | **Desenho de arquitetura - Os requisitos da infraestrutura(Aqui demonstramos a arquitetura desenhada para execução do projeto)** | [ Excalidraw ](https://excalidraw.com/#json=rJL77TFibyLWrqWuSkZSs,6HxeG0YGqEvn-A7UkdRVfQ) |
-| **Vídeo de demonstração do Projeto** |  [ Google Drive  ](https://drive.google.com/file/d/1k7tnzqGyFv6tTJiQoxxv_KPjB3UnbYb4/view?usp=sharing) |
+| **Vídeo de demonstração do Projeto** |  [ Youtube ](https://www.youtube.com/watch?v=XebfFrjbd4U) |
 ---
 
 ## 🛠️ Tecnologias

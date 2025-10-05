@@ -55,7 +55,7 @@ kubectl create secret docker-registry magalu-registry-secret \
     --docker-email='<resultado_campo_email_comando_anterior>'
 ````
 
-# 10. Agora precisamos referenciar esta imagem no depoloyment:
+# 10. Agora precisamos referenciar esta imagem no deployment:
 ````yaml
 spec:
       containers:
