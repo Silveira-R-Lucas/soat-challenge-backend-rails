@@ -5,9 +5,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  DOCKER_IMAGE_NAME: container-registry.br-se1.magalu.cloud/soat-challenge-2/soat_tech_challenge
-
 jobs:
   test-and-lint:
     name: Test and Lint
@@ -17,7 +14,7 @@ jobs:
         image: postgres:13
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: password
           POSTGRES_DB: soat_challenge_fase_01_test
         ports:
           - 5432:5432
@@ -45,7 +42,7 @@ jobs:
       - name: Run RSpec tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/soat_challenge_fase_01_test
+          DATABASE_URL: postgres://postgres:password@localhost:5432/soat_challenge_fase_01_test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
           bundle exec rails db:prepare
@@ -58,7 +55,8 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     env:
-      ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.sa-east-1.amazonaws.com/soat-challenge/rails-app
+      ECR_REPOSITORY: soat-challenge/rails-app
+      AWS_REGION: sa-east-1
 
     permissions:
       contents: read
@@ -73,7 +71,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: sa-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -84,8 +82,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           IMAGE_TAG=${{ github.sha }}
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
